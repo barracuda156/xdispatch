@@ -57,10 +57,14 @@ endif()
 
 # are we running on mac os and want to build universal binaries?
 if(MZ_MACOS)
-    option(XDISPATCH_UNIVERSAL "Enable to build universal binaries" off)
-    if( XDISPATCH_UNIVERSAL )
-            message("-- building universal binaries")
+    option(XDISPATCH_UNIVERSAL "Enable to build universal binaries" OFF)
+    if(XDISPATCH_UNIVERSAL)
+        message("-- building universal binaries")
+        if(CMAKE_SYSTEM_PROCESSOR MATCHES "ppc|ppc64")
+            mz_add_flag(GCC -arch ppc -arch ppc64)
+        else()
             mz_add_flag(GCC -arch i386 -arch x86_64)
+        endif()
     endif()
 endif()
 
